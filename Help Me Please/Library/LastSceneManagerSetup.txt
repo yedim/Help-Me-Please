@@ -1,0 +1,4 @@
+sceneSetups:
+- path: C:/Users/USER/Documents/CA/CandyCrush/Assets/Candy Crush Soda.unity
+  isLoaded: 1
+  isActive: 1
