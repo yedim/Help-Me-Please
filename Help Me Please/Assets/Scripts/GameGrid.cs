@@ -16,6 +16,15 @@ public class GameGrid : MonoBehaviour
         GetCandies();
         FillGrid();
         GridItem.OnMouseOverItemEventHandler += OnMouseOverItem;
+        List<GridItem> matchesForItem = SearchVertically(_items[3, 3]);
+        if(matchesForItem.Count >=3)
+        {
+            Debug.Log("There are valid matches in the index."); // 색인에 유효한 일치가 있다
+        }
+        else
+        {
+            Debug.Log("There are no valid matches in the index."); // 색인에 유효한 일치 항목이 없습니다.
+        }
     }
 
     void OnDisable()
@@ -89,6 +98,43 @@ public class GameGrid : MonoBehaviour
         b.OnItemPositionChanged(a.x, a.y);
         a.OnItemPositionChanged(bOldX, bOldY);
     }
+
+    List<GridItem> SearchHorizontally(GridItem item)
+    {
+        List<GridItem> hItems = new List<GridItem> { item };
+        int left = item.x - 1;
+        int right = item.x + 1;
+        while(left>=0 && _items[left,item.y].id == item.id)
+        { 
+            hItems.Add(_items[left, item.y]);
+            left--;
+        }
+        while(right<xSize&& _items [right, item.y].id ==item.id)
+        {
+            hItems.Add(_items[right, item.y]);
+            right++;
+        }
+        return hItems;
+    }
+
+    List<GridItem> SearchVertically (GridItem item)
+    {
+        List<GridItem> vItems = new List<GridItem> { item };
+        int lower = item.y - 1;
+        int upper = item.y + 1;
+        while(lower>=0 && _items[item.x, lower].id==item.id)
+        {
+            vItems.Add(_items[item.x, lower]);
+            lower--;
+        }
+        while(upper<ySize && _items[item.x, upper].id==item.id)
+        {
+            vItems.Add(_items[item.x, upper]);
+            upper++;
+        }
+        return vItems;
+    }
+
     void GetCandies()
     {
         _candies = Resources.LoadAll<GameObject>("Prefabs");
