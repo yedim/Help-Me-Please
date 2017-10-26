@@ -10,6 +10,7 @@ public class GameGrid : MonoBehaviour
     private GameObject[] _candies;
     private GridItem[,] _items;
     private GridItem _currentlySelectedItem;
+    public static int minItemsForMatch=3;
 
     private void Start()
     {
@@ -135,6 +136,69 @@ public class GameGrid : MonoBehaviour
         return vItems;
     }
 
+    MatchInfo GetMatchInformation (GridItem item)
+    {
+        MatchInfo m = new MatchInfo();
+        m.match = null;
+        List<GridItem> hMatch = SearchHorizontally(item);
+        List<GridItem> vMatch = SearchVertically(item);
+        if (hMatch.Count >= minItemsForMatch && hMatch.Count > vMatch.Count)
+        {
+            m.matchStartingX = GetMinimumX(hMatch);
+            m.matchEndingX = GetMaximumX(hMatch);
+            m.matchStartingY = m.matchEndingY = hMatch[0].y;
+            m.match = hMatch;
+        }
+        else if(vMatch.Count >= minItemsForMatch)
+        {
+            m.matchStartingY = GetMinimumY(vMatch);
+            m.matchEndingY = GetMaximumY(vMatch);
+            m.matchStartingX = m.matchEndingX = vMatch[0].x;
+            m.match = vMatch;
+        }
+
+        return m;
+    }
+
+    int GetMinimumX (List<GridItem> items)
+    {
+        float[] indices = new float [items.Count];
+        for(int i=0; i<indices.Length;i++)
+        {
+            indices[i] = items[i].x;
+        }
+        return (int)Mathf.Min(indices);
+    }
+
+    int GetMaximumX (List<GridItem> items)
+    {
+        float[] indices = new float[items.Count];
+        for (int i = 0; i < indices.Length; i++)
+        {
+            indices[i] = items[i].x;
+        }
+        return (int)Mathf.Max(indices);
+    }
+
+    int GetMinimumY(List<GridItem> items)
+    {
+        float[] indices = new float[items.Count];
+        for (int i = 0; i < indices.Length; i++)
+        {
+            indices[i] = items[i].y;
+        }
+        return (int)Mathf.Min(indices);
+    }
+
+    int GetMaximumY(List<GridItem> items)
+    {
+        float[] indices = new float[items.Count];
+        for (int i = 0; i < indices.Length; i++)
+        {
+            indices[i] = items[i].y;
+        }
+        return (int)Mathf.Max(indices);
+    }
     void GetCandies()
     {
         _candies = Resources.LoadAll<GameObject>("Prefabs");
