@@ -66,7 +66,7 @@ public class GameGrid : MonoBehaviour
             float yDiff = Mathf.Abs(item.y - _currentlySelectedItem.y);
             if (xDiff + yDiff == 1)
             {
-                StartCoroutine(Swap(_currentlySelectedItem, item));
+                StartCoroutine(TryMatch(_currentlySelectedItem, item));
                 _currentlySelectedItem = null;
             }
             else
@@ -77,6 +77,34 @@ public class GameGrid : MonoBehaviour
         }
     }
 
+    IEnumerator TryMatch(GridItem a, GridItem b)
+    {
+        yield return StartCoroutine(Swap(a, b));
+        MatchInfo matchA = GetMatchInformation(a);
+        MatchInfo matchB = GetMatchInformation(b);
+        if(!matchA.validMatch && !matchB.validMatch)
+        {
+            yield return StartCoroutine(Swap(a, b));
+            yield break;
+        }
+        if(matchA.validMatch)
+        {
+            yield return StartCoroutine(DestroyItems(matchA.match));
+        }
+        else if(matchB.validMatch)
+        {
+            yield return StartCoroutine(DestroyItems(matchB.match));
+        }
+    }
+
+    IEnumerator DestroyItems(List<GridItem> items)
+    {
+        foreach(GridItem i in items)
+        {
+            yield return StartCoroutine(i.transform.Scale(Vector3.zero, 1f));
+            Destroy(i.gameObject);
+        }
+    }
     IEnumerator Swap(GridItem a, GridItem b)
     {
         ChangeRigidbodyStatus(false);
