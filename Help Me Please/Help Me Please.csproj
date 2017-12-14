@@ -78,10 +78,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Over.cs" />
+    <Compile Include="Assets\PauseMenu.cs" />
+    <Compile Include="Assets\Ranking.cs" />
+    <Compile Include="Assets\Score.cs" />
     <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\GameGrid.cs" />
     <Compile Include="Assets\Scripts\GridItem.cs" />
     <Compile Include="Assets\Scripts\MatchInfo.cs" />
+    <Compile Include="Assets\SoundManager.cs" />
+    <Compile Include="Assets\Timer.cs" />
+    <Compile Include="Assets\Title.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
